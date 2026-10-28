@@ -1,6 +1,7 @@
 -- Рома Чит 228 · Alpha · самостоятельная клиентская версия.
 -- Запускается целиком в клиентской Lua-среде (executor); установка в Studio не нужна.
--- Ключ: ??? · меню: RightShift · подъём: H · Phase: G · телефон: круг.
+-- Ключ: ??? (запоминается) · меню: RightShift · подъём: H · Phase: G.
+-- Телефон: чёрная кнопка Open Menu. FOV независим от вида от третьего лица.
 -- WallHack: прозрачность карты; ESP: отдельная подсветка. FullBright и Fly.
 -- Скорость/телепорт/Fly зависят от игры. Подъём не обеспечивает бессмертие.
 -- Поддержка Real/Delta определяется доступными API; живой запуск не проверялся.
@@ -26,11 +27,21 @@ local Config = (function()
 local Config = {
 	DefaultLanguage = "ru",
 	DefaultTheme = "blackviolet",
+	DefaultFont = "gotham",
 	DefaultHotkey = "RightShift",
 	DefaultLiftHotkey = "H",
 	DefaultPhaseHotkey = "G",
 	DiscordUrl = "https://dsc.gg/nobs",
-	ThemeOrder = { "blackviolet", "violet", "midnight", "rose", "ocean", "emerald", "amber", "custom" },
+	ThemeOrder = { "blackviolet", "violet", "midnight", "rose", "ocean", "emerald", "amber", "plum", "cobalt", "crimson", "graphite", "lavender", "light", "custom" },
+	FontOrder = { "gotham", "source", "roboto", "mono", "ubuntu", "serif" },
+	Fonts = {
+		gotham = { name = "Gotham", regular = Enum.Font.Gotham, bold = Enum.Font.GothamBold },
+		source = { name = "Source Sans", regular = Enum.Font.SourceSans, bold = Enum.Font.SourceSansBold },
+		roboto = { name = "Roboto", regular = Enum.Font.Roboto, bold = Enum.Font.Roboto },
+		mono = { name = "Roboto Mono", regular = Enum.Font.RobotoMono, bold = Enum.Font.RobotoMono },
+		ubuntu = { name = "Ubuntu", regular = Enum.Font.Ubuntu, bold = Enum.Font.Ubuntu },
+		serif = { name = "Merriweather", regular = Enum.Font.Merriweather, bold = Enum.Font.Merriweather },
+	},
 	ColorPalette = {
 		{ id = "violet", color = Color3.fromRGB(150, 80, 255) },
 		{ id = "red", color = Color3.fromRGB(255, 70, 82) },
@@ -128,6 +139,72 @@ local Config = {
 			muted = Color3.fromRGB(194, 169, 129),
 			stroke = Color3.fromRGB(88, 61, 31),
 		},
+		plum = {
+			name = "Plum",
+			bg = Color3.fromRGB(21, 8, 24),
+			surface = Color3.fromRGB(34, 15, 39),
+			raised = Color3.fromRGB(49, 24, 56),
+			accent = Color3.fromRGB(155, 68, 190),
+			accent2 = Color3.fromRGB(96, 42, 140),
+			text = Color3.fromRGB(252, 239, 255),
+			muted = Color3.fromRGB(190, 153, 199),
+			stroke = Color3.fromRGB(83, 41, 92),
+		},
+		cobalt = {
+			name = "Cobalt",
+			bg = Color3.fromRGB(8, 17, 36),
+			surface = Color3.fromRGB(14, 27, 52),
+			raised = Color3.fromRGB(22, 39, 72),
+			accent = Color3.fromRGB(61, 110, 214),
+			accent2 = Color3.fromRGB(38, 62, 156),
+			text = Color3.fromRGB(238, 244, 255),
+			muted = Color3.fromRGB(149, 169, 204),
+			stroke = Color3.fromRGB(42, 66, 105),
+		},
+		crimson = {
+			name = "Crimson",
+			bg = Color3.fromRGB(24, 8, 14),
+			surface = Color3.fromRGB(39, 14, 24),
+			raised = Color3.fromRGB(57, 23, 35),
+			accent = Color3.fromRGB(192, 57, 89),
+			accent2 = Color3.fromRGB(124, 32, 61),
+			text = Color3.fromRGB(255, 240, 244),
+			muted = Color3.fromRGB(200, 150, 166),
+			stroke = Color3.fromRGB(94, 39, 58),
+		},
+		graphite = {
+			name = "Graphite",
+			bg = Color3.fromRGB(13, 15, 20),
+			surface = Color3.fromRGB(21, 24, 31),
+			raised = Color3.fromRGB(33, 38, 48),
+			accent = Color3.fromRGB(96, 113, 145),
+			accent2 = Color3.fromRGB(62, 74, 100),
+			text = Color3.fromRGB(238, 241, 248),
+			muted = Color3.fromRGB(158, 169, 188),
+			stroke = Color3.fromRGB(63, 72, 90),
+		},
+		lavender = {
+			name = "Lavender",
+			bg = Color3.fromRGB(230, 222, 248),
+			surface = Color3.fromRGB(246, 241, 255),
+			raised = Color3.fromRGB(214, 202, 236),
+			accent = Color3.fromRGB(105, 66, 180),
+			accent2 = Color3.fromRGB(77, 45, 145),
+			text = Color3.fromRGB(35, 24, 56),
+			muted = Color3.fromRGB(91, 74, 115),
+			stroke = Color3.fromRGB(161, 143, 185),
+		},
+		light = {
+			name = "Light",
+			bg = Color3.fromRGB(238, 241, 248),
+			surface = Color3.fromRGB(255, 255, 255),
+			raised = Color3.fromRGB(224, 229, 240),
+			accent = Color3.fromRGB(75, 72, 170),
+			accent2 = Color3.fromRGB(46, 80, 150),
+			text = Color3.fromRGB(27, 34, 52),
+			muted = Color3.fromRGB(84, 98, 122),
+			stroke = Color3.fromRGB(177, 187, 207),
+		},
 		custom = {
 			name = "Custom",
 			bg = Color3.fromRGB(8, 7, 12),
@@ -175,7 +252,7 @@ local Config = {
 			flyUp = "Вверх",
 			flyDown = "Вниз",
 			lift = "Подъём персонажа",
-			liftHint = "Меняет HipHeight на клиенте. Не даёт бессмертия и не отделяет хитбокс от тела.",
+			liftHint = "При выключении возвращает в точку включения. Подъём через HipHeight не даёт бессмертия.",
 			liftHeight = "Высота подъёма, студы",
 			liftHotkey = "Клавиша подъёма",
 			liftHotkeyHint = "Включает и выключает подъём, когда ты не вводишь текст.",
@@ -200,7 +277,7 @@ local Config = {
 			statusPanelHint = "Всегда видна при включении; можно двигать и закреплять. Кнопки и ползунки связаны с основным меню.",
 			statusTitle = "АКТИВНЫЕ ФУНКЦИИ",
 			customTheme = "Своя тема",
-			customThemeHint = "Любой цвет: редактируй фон и градиент через HSV или HEX.",
+			customThemeHint = "Настрой фон, градиент и цвета элементов через HSV или HEX.",
 			customBackground = "Цвет фона",
 			customAccent = "Первый цвет градиента",
 			customAccent2 = "Второй цвет градиента",
@@ -212,7 +289,7 @@ local Config = {
 			device = "Тип меню",
 			desktop = "ПК",
 			mobile = "Мобильный",
-			mobileFooter = "Круг: открыть / закрыть",
+			mobileFooter = "Open Menu",
 			hotkey = "Клавиша меню",
 			changeHotkey = "Изменить клавишу",
 			pressKey = "Нажми клавишу… Esc — отмена",
@@ -257,8 +334,8 @@ local Config = {
 			colorHex = "HEX-цвет",
 			colorInvalid = "Введи HEX-цвет: #RGB или #RRGGBB.",
 			editColor = "Изменить цвет",
-			phase = "Прохождение сквозь стены",
-			phaseHint = "Медленно двигает вперёд с автоматическим ноуклипом. Несовместимо с полётом; сервер может вернуть позицию.",
+			phase = "Phase",
+			phaseHint = "Медленно двигает вперёд: 2 студ/с, с автоматическим ноуклипом. Несовместимо с полётом; сервер может вернуть позицию.",
 			phaseSpeed = "Скорость прохождения",
 			phaseHotkey = "Клавиша прохождения",
 			quickAccess = "Быстрый доступ",
@@ -296,6 +373,22 @@ local Config = {
 			configApplyFailed = "Не удалось применить конфигурацию.",
 			quickFlyVertical = "Полёт: вверх / вниз",
 			showFlyVertical = "Показывать кнопки полёта",
+			font = "Шрифт меню",
+			fontHint = "Меняет шрифт меню и панели быстрого доступа.",
+			fovToggle = "Свой угол обзора",
+			fovHint = "Работает независимо от режима камеры. При выключении возвращает исходный FOV.",
+			customAdvanced = "Дополнительные цвета",
+			customDerived = "Неуказанные цвета рассчитываются из фона.",
+			resetCustomColors = "Сбросить свои цвета",
+			customSurface = "Цвет карточек",
+			customRaised = "Цвет элементов",
+			customText = "Основной текст",
+			customMuted = "Второстепенный текст",
+			customStroke = "Цвет обводки",
+			keyRemembered = "Ключ уже запомнен на этом устройстве.",
+			keyRememberHint = "Успешный ввод запоминается локально; без файлов — только в текущем запуске.",
+			copyServerLink = "Скопировать ссылку на Discord-сервер",
+			openMenu = "Open Menu",
 		},
 		en = {
 			accessTitle = "MENU ACCESS",
@@ -331,7 +424,7 @@ local Config = {
 			flyUp = "Up",
 			flyDown = "Down",
 			lift = "Character lift",
-			liftHint = "Changes HipHeight on the client. Does not grant invulnerability or separate the hitbox from the body.",
+			liftHint = "Disabling returns you to the activation point. Lifting with HipHeight does not grant invulnerability.",
 			liftHeight = "Lift height, studs",
 			liftHotkey = "Lift key",
 			liftHotkeyHint = "Toggles character lift while you are not typing.",
@@ -356,7 +449,7 @@ local Config = {
 			statusPanelHint = "Always visible when enabled. Drag or pin it; its buttons and sliders stay synced with the main menu.",
 			statusTitle = "ACTIVE FEATURES",
 			customTheme = "Custom theme",
-			customThemeHint = "Any color: edit the background and gradient using HSV or HEX.",
+			customThemeHint = "Edit the background, gradient and control colors using HSV or HEX.",
 			customBackground = "Background color",
 			customAccent = "First gradient color",
 			customAccent2 = "Second gradient color",
@@ -368,7 +461,7 @@ local Config = {
 			device = "Menu type",
 			desktop = "Desktop",
 			mobile = "Mobile",
-			mobileFooter = "Circle: open / close",
+			mobileFooter = "Open Menu",
 			hotkey = "Menu key",
 			changeHotkey = "Change key",
 			pressKey = "Press a key… Esc to cancel",
@@ -413,8 +506,8 @@ local Config = {
 			colorHex = "HEX color",
 			colorInvalid = "Enter a HEX color: #RGB or #RRGGBB.",
 			editColor = "Edit color",
-			phase = "Phase through walls",
-			phaseHint = "Moves slowly forward with automatic noclip. Mutually exclusive with Fly; the server may correct your position.",
+			phase = "Phase",
+			phaseHint = "Moves slowly forward at 2 studs/s with automatic noclip. Mutually exclusive with Fly; the server may correct your position.",
 			phaseSpeed = "Phase speed",
 			phaseHotkey = "Phase key",
 			quickAccess = "Quick access",
@@ -452,6 +545,22 @@ local Config = {
 			configApplyFailed = "Could not apply the configuration.",
 			quickFlyVertical = "Fly: up / down",
 			showFlyVertical = "Show flight buttons",
+			font = "Menu font",
+			fontHint = "Changes the font of the menu and quick access panel.",
+			fovToggle = "Custom field of view",
+			fovHint = "Works independently of camera mode. Disabling restores the original FOV.",
+			customAdvanced = "Advanced colors",
+			customDerived = "Unspecified colors are derived from the background.",
+			resetCustomColors = "Reset custom colors",
+			customSurface = "Card color",
+			customRaised = "Control color",
+			customText = "Primary text",
+			customMuted = "Secondary text",
+			customStroke = "Border color",
+			keyRemembered = "Your key is already remembered on this device.",
+			keyRememberHint = "Successful entry is remembered locally; without file support, only for this run.",
+			copyServerLink = "Copy Discord server link",
+			openMenu = "Open Menu",
 		},
 		es = {
 			accessTitle = "ACCESO AL MENÚ",
@@ -487,7 +596,7 @@ local Config = {
 			flyUp = "Subir",
 			flyDown = "Bajar",
 			lift = "Elevación del personaje",
-			liftHint = "Cambia HipHeight en el cliente. No da invulnerabilidad ni separa la hitbox del cuerpo.",
+			liftHint = "Al desactivarlo, vuelves al punto de activación. Elevar con HipHeight no da invulnerabilidad.",
 			liftHeight = "Altura de elevación, studs",
 			liftHotkey = "Tecla de elevación",
 			liftHotkeyHint = "Activa y desactiva la elevación mientras no escribes texto.",
@@ -512,7 +621,7 @@ local Config = {
 			statusPanelHint = "Siempre visible al activarlo. Arrástralo o fíjalo; sus botones y deslizadores se sincronizan con el menú.",
 			statusTitle = "FUNCIONES ACTIVAS",
 			customTheme = "Tema personalizado",
-			customThemeHint = "Cualquier color: edita el fondo y el degradado con HSV o HEX.",
+			customThemeHint = "Edita el fondo, el degradado y los colores de controles con HSV o HEX.",
 			customBackground = "Color de fondo",
 			customAccent = "Primer color del degradado",
 			customAccent2 = "Segundo color del degradado",
@@ -524,7 +633,7 @@ local Config = {
 			device = "Tipo de menú",
 			desktop = "PC",
 			mobile = "Móvil",
-			mobileFooter = "Círculo: abrir / cerrar",
+			mobileFooter = "Open Menu",
 			hotkey = "Tecla del menú",
 			changeHotkey = "Cambiar tecla",
 			pressKey = "Pulsa una tecla… Esc para cancelar",
@@ -569,8 +678,8 @@ local Config = {
 			colorHex = "Color HEX",
 			colorInvalid = "Introduce un color HEX: #RGB o #RRGGBB.",
 			editColor = "Editar color",
-			phase = "Atravesar paredes",
-			phaseHint = "Avanza despacio con noclip automático. No puede usarse con Vuelo; el servidor puede corregir tu posición.",
+			phase = "Phase",
+			phaseHint = "Avanza despacio a 2 studs/s con noclip automático. No puede usarse con Vuelo; el servidor puede corregir tu posición.",
 			phaseSpeed = "Velocidad al atravesar",
 			phaseHotkey = "Tecla para atravesar",
 			quickAccess = "Acceso rápido",
@@ -608,6 +717,22 @@ local Config = {
 			configApplyFailed = "No se pudo aplicar la configuración.",
 			quickFlyVertical = "Vuelo: subir / bajar",
 			showFlyVertical = "Mostrar botones de vuelo",
+			font = "Fuente del menú",
+			fontHint = "Cambia la fuente del menú y del panel de acceso rápido.",
+			fovToggle = "Campo de visión propio",
+			fovHint = "Funciona aparte del modo de cámara. Al desactivarlo, restaura el FOV original.",
+			customAdvanced = "Colores avanzados",
+			customDerived = "Los colores sin definir se calculan a partir del fondo.",
+			resetCustomColors = "Restablecer colores propios",
+			customSurface = "Color de tarjetas",
+			customRaised = "Color de controles",
+			customText = "Texto principal",
+			customMuted = "Texto secundario",
+			customStroke = "Color del borde",
+			keyRemembered = "Tu clave ya está recordada en este dispositivo.",
+			keyRememberHint = "El acceso se recuerda localmente; sin archivos, solo durante esta ejecución.",
+			copyServerLink = "Copiar enlace del servidor de Discord",
+			openMenu = "Open Menu",
 		},
 	},
 }
@@ -634,7 +759,14 @@ return function(player, Config, caps)
 	local LEGACY_SETTINGS_FILE = "RomaMenu228.settings.json"
 	local SETTINGS_FOLDER = "RomaMenu228"
 	local FOLDER_SETTINGS_FILE = "RomaMenu228/settings.json"
-	local ACCESS_KEY = "joinobozurdsc"
+	local LEGACY_ACCESS_FILE = "RomaMenu228.access.json"
+	local FOLDER_ACCESS_FILE = "RomaMenu228/access.json"
+	local ACCESS_KEY = "joinobozhurdsc"
+	local ACCESS_VERSION = 2
+	local accessChecksum = 0
+	for index = 1, #ACCESS_KEY do accessChecksum = (accessChecksum * 131 + string.byte(ACCESS_KEY, index)) % 2147483647 end
+	-- This marker is tied to the current key; it is a local convenience gate.
+	local ACCESS_TAG = "roma-v2-" .. string.format("%d", accessChecksum)
 	caps = type(caps) == "table" and caps or {}
 	local settingsFile = LEGACY_SETTINGS_FILE
 	local settingsPathChecked = false
@@ -643,6 +775,8 @@ return function(player, Config, caps)
 	local generation = 0
 	local state = {
 		unlocked = false,
+		authLoaded = false,
+		authPersistent = false,
 		speedEnabled = false,
 		speed = 16,
 		speedApplied = false,
@@ -687,20 +821,21 @@ return function(player, Config, caps)
 			return nil
 		end
 		local result = {}
-		for _, field in ipairs({ "bg", "accent", "accent2" }) do
+		for fieldIndex, field in ipairs({ "bg", "accent", "accent2", "surface", "raised", "text", "muted", "stroke" }) do
 			local color = value[field]
-			if type(color) ~= "table" then
+			if color == nil and fieldIndex > 3 then
+				-- Missing optional tokens are derived by the UI from the main colors.
+			elseif type(color) ~= "table" then
 				return nil
-			end
-			local channels = { color[1] or color.r, color[2] or color.g, color[3] or color.b }
-			for index = 1, 3 do
-				local channel = channels[index]
-				if not finite(channel) or channel < 0 or channel > 255 then
-					return nil
+			else
+				local channels = { color[1] or color.r, color[2] or color.g, color[3] or color.b }
+				for index = 1, 3 do
+					local channel = channels[index]
+					if not finite(channel) or channel < 0 or channel > 255 then return nil end
+					channels[index] = math.floor(channel + 0.5)
 				end
-				channels[index] = math.floor(channel + 0.5)
+				result[field] = channels
 			end
-			result[field] = channels
 		end
 		return result
 	end
@@ -723,19 +858,78 @@ return function(player, Config, caps)
 		return settingsFile
 	end
 
-	local function readPreferencesFile(path)
+	local function readStoredTable(path, limit)
+		if type(caps.readfile) ~= "function" then return nil end
 		if type(caps.isfile) == "function" then
 			local checked, exists = pcall(caps.isfile, path)
 			if not checked or exists ~= true then return nil end
 		end
 		local read, content = pcall(caps.readfile, path)
-		if not read or type(content) ~= "string" or #content > 4096 then return nil end
+		if not read or type(content) ~= "string" or #content > limit then return nil end
 		local decoded, data = pcall(function() return HttpService:JSONDecode(content) end)
 		if not decoded or type(data) ~= "table" then return nil end
+		return data
+	end
+
+	local function readPreferencesFile(path)
+		local data = readStoredTable(path, 4096)
+		if not data then return nil end
 		local colors = customColors(data.customTheme)
 		local theme = validTheme(data.defaultTheme, colors) and data.defaultTheme or nil
 		if not colors and not theme then return nil end
 		return { defaultTheme = theme, customTheme = colors }
+	end
+
+	local function selectAccessFile()
+		return selectSettingsFile() == FOLDER_SETTINGS_FILE and FOLDER_ACCESS_FILE or LEGACY_ACCESS_FILE
+	end
+
+	local function validAuthMarker(value)
+		return type(value) == "table" and value.version == ACCESS_VERSION and value.tag == ACCESS_TAG
+	end
+
+	local function rememberSessionAuth()
+		pcall(function() player:SetAttribute("RomaMenuAccess", ACCESS_TAG) end)
+		pcall(function()
+			if type(caps.sessionAuth) == "table" then
+				caps.sessionAuth.version = ACCESS_VERSION
+				caps.sessionAuth.tag = ACCESS_TAG
+			end
+		end)
+	end
+
+	local function saveAuthMarker()
+		rememberSessionAuth()
+		if type(caps.writefile) == "function" and type(caps.readfile) == "function" then
+			local saved = pcall(function()
+				caps.writefile(selectAccessFile(), HttpService:JSONEncode({ version = ACCESS_VERSION, tag = ACCESS_TAG }))
+			end)
+			state.authPersistent = state.authPersistent or saved
+		end
+		return state.authPersistent
+	end
+
+	local function loadCachedAuth()
+		if state.authLoaded then return end
+		state.authLoaded = true
+		local checked, attribute = pcall(function() return player:GetAttribute("RomaMenuAccess") end)
+		local sessionValid = (checked and attribute == ACCESS_TAG) or validAuthMarker(caps.sessionAuth)
+		local path = selectAccessFile()
+		local marker = readStoredTable(path, 512)
+		local migrate = false
+		if not validAuthMarker(marker) and path ~= LEGACY_ACCESS_FILE then
+			marker = readStoredTable(LEGACY_ACCESS_FILE, 512)
+			migrate = validAuthMarker(marker)
+		end
+		if validAuthMarker(marker) then
+			state.unlocked = true
+			state.authPersistent = true
+			rememberSessionAuth()
+			if migrate then saveAuthMarker() end
+		elseif sessionValid then
+			state.unlocked = true
+			rememberSessionAuth()
+		end
 	end
 
 	local function loadPreferences()
@@ -1054,6 +1248,20 @@ return function(player, Config, caps)
 		end
 	end
 
+	local function returnLiftPosition()
+		local character, humanoid = state.originalLiftCharacter, state.humanoid
+		if not character or character ~= state.character or character ~= player.Character or not humanoid or not humanoid.Parent or humanoid.Health <= 0 or not state.originalLiftPivot then return end
+		pcall(function()
+			character:PivotTo(state.originalLiftPivot)
+			for _, object in ipairs(character:GetDescendants()) do
+				if object:IsA("BasePart") then
+					object.AssemblyLinearVelocity = Vector3.zero
+					object.AssemblyAngularVelocity = Vector3.zero
+				end
+			end
+		end)
+	end
+
 	local function applyLift()
 		local humanoid = state.humanoid
 		if not humanoid or not humanoid.Parent then
@@ -1062,13 +1270,19 @@ return function(player, Config, caps)
 		if state.god then
 			if not state.godApplied then
 				state.originalHipHeight = humanoid.HipHeight
+				state.originalLiftCharacter = state.character
+				local captured, pivot = pcall(function() return state.character:GetPivot() end)
+				state.originalLiftPivot = captured and pivot or nil
 				state.godApplied = true
 			end
 			humanoid.HipHeight = state.originalHipHeight + state.liftHeight
 		elseif state.godApplied then
 			humanoid.HipHeight = state.originalHipHeight
+			returnLiftPosition()
 			state.godApplied = false
 			state.originalHipHeight = nil
+			state.originalLiftPivot = nil
+			state.originalLiftCharacter = nil
 		end
 	end
 
@@ -1171,9 +1385,10 @@ return function(player, Config, caps)
 		pcall(function() character:PivotTo(character:GetPivot() + offset) end)
 	end
 
-	local function detachCharacter()
+	local function detachCharacter(returnLift)
 		generation = generation + 1
 		stopFly()
+		if returnLift and state.godApplied then returnLiftPosition() end
 		if state.diedConnection then state.diedConnection:Disconnect(); state.diedConnection = nil end
 		if state.descendantConnection then
 			state.descendantConnection:Disconnect()
@@ -1196,6 +1411,8 @@ return function(player, Config, caps)
 		state.godApplied = false
 		state.originalSpeed = nil
 		state.originalHipHeight = nil
+		state.originalLiftPivot = nil
+		state.originalLiftCharacter = nil
 		state.humanoid = nil
 		state.character = nil
 	end
@@ -1268,9 +1485,12 @@ return function(player, Config, caps)
 		end
 		payload = payload or {}
 		if action == "Status" then
+			loadCachedAuth()
+			if state.unlocked then loadPreferences() end
 			return {
 				ok = true, authorized = true, unlocked = state.unlocked, defaultTheme = state.defaultTheme, customTheme = state.customTheme,
 				phaseEnabled = state.phaseEnabled, flyEnabled = state.flyEnabled, phaseValue = state.phaseSpeed, flyValue = state.flySpeed,
+				authPersistent = state.authPersistent,
 			}
 		end
 		if action == "Unlock" then
@@ -1279,7 +1499,9 @@ return function(player, Config, caps)
 			end
 			loadPreferences()
 			state.unlocked = true
-			return { ok = true, unlocked = true, defaultTheme = state.defaultTheme, customTheme = state.customTheme, preferencesAvailable = true }
+			state.authLoaded = true
+			saveAuthMarker()
+			return { ok = true, unlocked = true, defaultTheme = state.defaultTheme, customTheme = state.customTheme, preferencesAvailable = true, authPersistent = state.authPersistent }
 		end
 		if not state.unlocked then
 			return failure("actionFailed")
@@ -1329,11 +1551,12 @@ return function(player, Config, caps)
 			end
 			return { ok = true, enabled = state.flyEnabled, value = state.flySpeed, flyEnabled = state.flyEnabled, phaseEnabled = state.phaseEnabled }
 		elseif action == "SetPhase" then
-			if type(payload.enabled) ~= "boolean" or (payload.value ~= nil and (not finite(payload.value) or payload.value < 0.5 or payload.value > 12)) then
+			if type(payload.enabled) ~= "boolean" or (payload.value ~= nil and not finite(payload.value)) then
 				return failure("actionFailed")
 			end
 			state.phaseEnabled = payload.enabled
-			if payload.value ~= nil then state.phaseSpeed = payload.value end
+			-- Older configs may include a value; Phase always moves at 2 studs/s.
+			state.phaseSpeed = 2
 			if state.phaseEnabled then
 				state.flyEnabled = false
 				stopFly()
@@ -1442,7 +1665,7 @@ return function(player, Config, caps)
 		state.wallEnabled = false
 		applyFullBright()
 		applyWallhack()
-		detachCharacter()
+		detachCharacter(true)
 	end
 
 	return backend
@@ -1771,7 +1994,7 @@ if not player then warn("RomaMenu must run on a Roblox client."); return end
 local playerGui = player:WaitForChild("PlayerGui")
 local existing = playerGui:FindFirstChild("RomaMenu228Client")
 if existing then
-	if existing:GetAttribute("RomaBuild") == "Alpha.3" then
+	if existing:GetAttribute("RomaBuild") == "Alpha.4" then
 		local control = existing:FindFirstChild("RomaMenuControl")
 		if control and control:IsA("BindableEvent") then control:Fire("Open") end
 		return
@@ -1781,12 +2004,13 @@ if existing then
 end
 local backend = CreateBackend(player, Config, Capabilities)
 local configStore = CreateConfigStore(Capabilities)
-local featureOrder = {"wallhack", "esp", "fullbright", "speed", "noclip", "lift", "fly", "phase", "thirdPerson"}
+local featureOrder = {"wallhack", "esp", "fullbright", "speed", "noclip", "lift", "fly", "phase", "thirdPerson", "fovToggle"}
 local pageIds = {"visuals", "movement", "players", "configs", "settings"}
 local state = {
 	language = Config.DefaultLanguage,
 	theme = Config.DefaultTheme,
 	defaultTheme = Config.DefaultTheme,
+	font = Config.DefaultFont,
 	mode = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and "mobile" or "desktop",
 	hotkey = Enum.KeyCode[Config.DefaultHotkey],
 	liftHotkey = Enum.KeyCode[Config.DefaultLiftHotkey or "H"],
@@ -1794,11 +2018,11 @@ local state = {
 	color = Color3.fromRGB(181, 125, 255),
 	speed = false, speedValue = 24, noclip = false, lift = false, liftHeight = 4,
 	fullbright = false, fly = false, flySpeed = 48, statusPanel = false,
-	phase = false, phaseSpeed = 2,
+	phase = false,
 	quick = {}, bindings = {lift = Enum.KeyCode.H, phase = Enum.KeyCode.G},
 	hudPinned = false, hudOnlyBound = false, hudPosition = nil, showFlyVertical = false,
 	flyVertical = 0,
-	thirdPerson = false, distance = 12, fov = 70,
+	thirdPerson = false, distance = 12, fovToggle = false, fov = 70,
 }
 local alive, unlocked, opened, capturing = true, false, true, nil
 local connections, pageConnections, modalConnections, hudConnections = {}, {}, {}, {}
@@ -1811,6 +2035,8 @@ local flightButtons = {}
 local sliderDrag
 local flyPointers = {}
 local customColors = {bg = {8, 6, 14}, accent = {155, 85, 255}, accent2 = {94, 43, 184}}
+local openerWidth, openerHeight = 112, 34
+local customAdvanced = false
 
 local function t(key)
 	local language = Config.Translations[state.language] or Config.Translations.en
@@ -1828,8 +2054,22 @@ end
 local function new(className, properties, parent)
 	local object = Instance.new(className)
 	for key, value in pairs(properties or {}) do object[key] = value end
+	if className == "TextLabel" or className == "TextButton" or className == "TextBox" then
+		local bold = properties and properties.Font == Enum.Font.GothamBold or false
+		object:SetAttribute("RomaFontBold", bold)
+		local font = Config.Fonts[state.font] or Config.Fonts[Config.DefaultFont]
+		object.Font = bold and font.bold or font.regular
+	end
 	object.Parent = parent
 	return object
+end
+local function applyFont()
+	local font = Config.Fonts[state.font] or Config.Fonts[Config.DefaultFont]
+	for _, object in ipairs(playerGui:GetDescendants()) do
+		if object:GetAttribute("RomaFontBold") ~= nil then
+			object.Font = object:GetAttribute("RomaFontBold") and font.bold or font.regular
+		end
+	end
 end
 local function paint(object, property, token)
 	object[property] = Config.Themes[state.theme][token]
@@ -1937,7 +2177,7 @@ end
 
 local gui = new("ScreenGui", {Name = "RomaMenu228Client", ResetOnSpawn = false,
 	IgnoreGuiInset = false, ZIndexBehavior = Enum.ZIndexBehavior.Sibling, DisplayOrder = 80}, playerGui)
-gui:SetAttribute("RomaBuild", "Alpha.3")
+gui:SetAttribute("RomaBuild", "Alpha.4")
 local controlEvent = new("BindableEvent", {Name = "RomaMenuControl"}, gui)
 local highlightFolder = new("Folder", {Name = "RomaMenuClientHighlights_" .. player.UserId}, workspace)
 local root = new("Frame", {Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1}, gui)
@@ -1962,16 +2202,12 @@ local content = new("Frame", {BackgroundTransparency = 1}, window)
 local footer = paint(label(window, "", 11), "TextColor3", "muted")
 footer.Position = UDim2.new(0, 18, 1, -28)
 footer.Size = UDim2.new(1, -36, 0, 20)
-local orb = button(root, "Р", true)
-orb.Name = "MobileToggle"
-orb.Size = UDim2.fromOffset(46, 46)
-orb.Position = UDim2.fromOffset(16, 120)
-orb.TextSize = 21
-local orbDot = new("Frame", {Size = UDim2.fromOffset(6, 6), Position = UDim2.new(1, -10, 1, -10),
-	BorderSizePixel = 0, BackgroundColor3 = Color3.fromRGB(177, 128, 255)}, orb)
-round(orbDot, 4)
-round(orb, 100)
-stroke(orb)
+local orb = new("TextButton", {Name = "MobileToggle", Text = "Open Menu", Font = Enum.Font.GothamBold,
+	Size = UDim2.fromOffset(openerWidth, openerHeight), Position = UDim2.fromOffset(16, 120),
+	TextSize = 12, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.new(0, 0, 0),
+	AutoButtonColor = false, BorderSizePixel = 0}, root)
+round(orb, 6)
+new("UIStroke", {Color = Color3.fromRGB(44, 44, 44), Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border}, orb)
 local toastLabel = paint(label(root, "", 13, true), "BackgroundColor3", "raised")
 toastLabel.Name = "Notification"
 toastLabel.BackgroundTransparency = 0.04
@@ -2076,37 +2312,56 @@ local function watchPlayer(other)
 end
 
 local cameraSnapshot
-local function restoreCamera()
+local fovSnapshots = {}
+local fovConnection
+local function restoreZoom()
 	if not cameraSnapshot then return end
 	-- Open the zoom interval before restoring both bounds.
 	player.CameraMinZoomDistance = 0.5
 	player.CameraMaxZoomDistance = math.max(cameraSnapshot.max, cameraSnapshot.min, 0.5)
 	player.CameraMinZoomDistance = cameraSnapshot.min
 	player.CameraMode = cameraSnapshot.mode
-	for camera, value in pairs(cameraSnapshot.fovs) do
-		if camera.Parent then camera.FieldOfView = value end
-	end
 	cameraSnapshot = nil
 end
+local function restoreFov()
+	for camera, value in pairs(fovSnapshots) do if camera.Parent then camera.FieldOfView = value end end
+	table.clear(fovSnapshots)
+end
+local function restoreCamera()
+	restoreZoom(); restoreFov()
+end
 local function applyCamera()
-	if not state.thirdPerson then restoreCamera(); return end
-	if not cameraSnapshot then
-		cameraSnapshot = {mode = player.CameraMode, min = player.CameraMinZoomDistance,
-			max = player.CameraMaxZoomDistance, fovs = {}}
-	end
-	player.CameraMode = Enum.CameraMode.Classic
-	player.CameraMinZoomDistance = 0.5
-	player.CameraMaxZoomDistance = state.distance
-	player.CameraMinZoomDistance = state.distance
+	if state.thirdPerson then
+		if not cameraSnapshot then
+			cameraSnapshot = {mode = player.CameraMode, min = player.CameraMinZoomDistance, max = player.CameraMaxZoomDistance}
+		end
+		player.CameraMode = Enum.CameraMode.Classic
+		player.CameraMinZoomDistance = 0.5
+		player.CameraMaxZoomDistance = state.distance
+		player.CameraMinZoomDistance = state.distance
+	else restoreZoom() end
+	if state.fovToggle then
+		local camera = workspace.CurrentCamera
+		if camera then
+			if fovSnapshots[camera] == nil then fovSnapshots[camera] = camera.FieldOfView end
+			camera.FieldOfView = state.fov
+		end
+	else restoreFov() end
+end
+local function watchCamera()
+	if fovConnection then fovConnection:Disconnect(); fovConnection = nil end
 	local camera = workspace.CurrentCamera
 	if camera then
-		if cameraSnapshot.fovs[camera] == nil then cameraSnapshot.fovs[camera] = camera.FieldOfView end
-		camera.FieldOfView = state.fov
+		fovConnection = camera:GetPropertyChangedSignal("FieldOfView"):Connect(function()
+			if alive and state.fovToggle and fovSnapshots[camera] ~= nil and camera.FieldOfView ~= state.fov then camera.FieldOfView = state.fov end
+		end)
 	end
+ 	applyCamera()
 end
-listen(workspace:GetPropertyChangedSignal("CurrentCamera"), applyCamera)
+listen(workspace:GetPropertyChangedSignal("CurrentCamera"), watchCamera)
+watchCamera()
 listen(player.CharacterAdded, function()
-	task.delay(0.3, function() if alive and state.thirdPerson then applyCamera() end end)
+		task.delay(0.3, function() if alive and (state.thirdPerson or state.fovToggle) then applyCamera() end end)
 end)
 
 local valueSpecs = {
@@ -2116,11 +2371,10 @@ local valueSpecs = {
 	speedValue = {feature = "speed", key = "speedValue", min = 8, max = 100, step = 1},
 	liftHeight = {feature = "lift", key = "liftHeight", min = 0, max = 50, step = 1},
 	flySpeed = {feature = "fly", key = "flySpeed", min = 10, max = 150, step = 1},
-	phaseSpeed = {feature = "phase", key = "phaseSpeed", min = 0.5, max = 12, step = 0.5},
 	distance = {feature = "thirdPerson", key = "cameraDistance", min = 4, max = 40, step = 1},
-	fov = {feature = "thirdPerson", key = "fieldOfView", min = 40, max = 100, step = 1},
+	fov = {feature = "fovToggle", key = "fieldOfView", min = 30, max = 120, step = 1},
 }
-local primaryValues = {wallhack = "wallAlpha", speed = "speedValue", lift = "liftHeight", fly = "flySpeed", phase = "phaseSpeed", thirdPerson = "distance"}
+local primaryValues = {wallhack = "wallAlpha", speed = "speedValue", lift = "liftHeight", fly = "flySpeed", thirdPerson = "distance", fovToggle = "fov"}
 local function refreshPanels()
 	if opened and unlocked then buildPage(true) else updateStatus() end
 end
@@ -2133,8 +2387,8 @@ setFeature = function(field, enabled, deferRefresh)
 	elseif field == "noclip" then action, payload = "SetNoclip", {enabled = enabled}
 	elseif field == "lift" then action, payload = "SetLift", {enabled = enabled, value = state.liftHeight}
 	elseif field == "fly" then action, payload = "SetFly", {enabled = enabled, value = state.flySpeed}
-	elseif field == "phase" then action, payload = "SetPhase", {enabled = enabled, value = state.phaseSpeed}
-	elseif field ~= "esp" and field ~= "thirdPerson" then return false end
+	elseif field == "phase" then action, payload = "SetPhase", {enabled = enabled}
+	elseif field ~= "esp" and field ~= "thirdPerson" and field ~= "fovToggle" then return false end
 	if action then
 		local result = request(action, payload)
 		if not report(result) then return false end
@@ -2143,7 +2397,7 @@ setFeature = function(field, enabled, deferRefresh)
 	end
 	state[field] = enabled
 	if field == "esp" then updateHighlights() end
-	if field == "thirdPerson" then applyCamera() end
+	if field == "thirdPerson" or field == "fovToggle" then applyCamera() end
 	if field == "fly" and not enabled then releaseFlyControls() end
 	if not deferRefresh then refreshPanels() end
 	return true
@@ -2355,6 +2609,7 @@ local function choice(parent, titleKey, options, selected, callback)
 		local text = (option.id == selected and "●  " or "○  ") .. option.name
 		local control = button(container, text, option.id == selected)
 		control.TextSize = 11
+		if option.font then control.Font = option.font end
 		listen(control.Activated, function() callback(option.id) end, pageConnections)
 	end
 	return frame
@@ -2411,23 +2666,29 @@ end
 
 local function installCustomTheme(colors)
 	if type(colors) ~= "table" then return end
-	for _, key in ipairs({"bg", "accent", "accent2"}) do
+	for _, key in ipairs({"bg", "accent", "accent2", "surface", "raised", "text", "muted", "stroke"}) do
 		local rgb = colors[key]
-		if type(rgb) ~= "table" or #rgb ~= 3 then return end
-		for _, component in ipairs(rgb) do
-			if type(component) ~= "number" or component ~= component or component < 0 or component > 255 then return end
+		if rgb ~= nil or key == "bg" or key == "accent" or key == "accent2" then
+			if type(rgb) ~= "table" or #rgb ~= 3 then return end
+			for _, component in ipairs(rgb) do
+				if type(component) ~= "number" or component ~= component or component < 0 or component > 255 then return end
+			end
 		end
 	end
 	customColors = colors
+	local function color(key, fallback)
+		local rgb = colors[key]
+		return rgb and Color3.fromRGB(rgb[1], rgb[2], rgb[3]) or fallback
+	end
 	local bg = Color3.fromRGB(colors.bg[1], colors.bg[2], colors.bg[3])
 	local light = (bg.R * 0.2126 + bg.G * 0.7152 + bg.B * 0.0722) > 0.55
-	local text = light and Color3.fromRGB(22, 19, 31) or Color3.fromRGB(246, 242, 255)
+	local text = color("text", light and Color3.fromRGB(22, 19, 31) or Color3.fromRGB(246, 242, 255))
 	local mix = light and Color3.new(0, 0, 0) or Color3.new(1, 1, 1)
 	Config.Themes.custom = {
-		name = Config.Themes.custom.name, bg = bg, surface = bg:Lerp(mix, 0.055), raised = bg:Lerp(mix, 0.12),
+		name = Config.Themes.custom.name, bg = bg, surface = color("surface", bg:Lerp(mix, 0.055)), raised = color("raised", bg:Lerp(mix, 0.12)),
 		accent = Color3.fromRGB(colors.accent[1], colors.accent[2], colors.accent[3]),
 		accent2 = Color3.fromRGB(colors.accent2[1], colors.accent2[2], colors.accent2[3]),
-		text = text, muted = bg:Lerp(text, 0.64), stroke = bg:Lerp(text, 0.25),
+		text = text, muted = color("muted", bg:Lerp(text, 0.64)), stroke = color("stroke", bg:Lerp(text, 0.25)),
 	}
 end
 local function colorHex(color)
@@ -2562,6 +2823,13 @@ local function settingsPage(parent)
 	choice(parent, "language", Config.Languages, state.language, function(id)
 		state.language = id; rebuild()
 	end)
+	local fontOptions = {}
+	for _, id in ipairs(Config.FontOrder) do
+		table.insert(fontOptions, {id = id, name = Config.Fonts[id].name, font = Config.Fonts[id].regular})
+	end
+	choice(parent, "font", fontOptions, state.font, function(id)
+		state.font = id; applyFont(); buildPage(true)
+	end)
 	local themeOptions = {}
 	for _, id in ipairs(Config.ThemeOrder) do
 		table.insert(themeOptions, {id = id, name = Config.Themes[id].name})
@@ -2585,6 +2853,15 @@ local function settingsPage(parent)
 	local resetTheme = button(themeCard, t("resetTheme"))
 	listen(resetTheme.Activated, function() state.theme = Config.DefaultTheme; applyTheme(); buildPage() end, pageConnections)
 	local custom = card(parent, "customTheme", "customThemeHint")
+	local preview = new("Frame", {Name = "CustomThemePreview", Size = UDim2.new(1, 0, 0, 28),
+		BorderSizePixel = 0, BackgroundColor3 = Config.Themes.custom.surface}, custom)
+	round(preview, 7)
+	local previewText = label(preview, t("themePreview"), 12, true)
+	previewText.TextColor3 = Config.Themes.custom.text
+	previewText.Position = UDim2.fromOffset(9, 0); previewText.Size = UDim2.new(1, -18, 1, 0)
+	local previewLine = new("Frame", {Size = UDim2.new(1, 0, 0, 3), Position = UDim2.new(0, 0, 1, -3),
+		BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0}, preview)
+	new("UIGradient", {Color = ColorSequence.new(Config.Themes.custom.accent, Config.Themes.custom.accent2)}, previewLine)
 	for _, entry in ipairs({{"bg", "customBackground"}, {"accent", "customAccent"}, {"accent2", "customAccent2"}}) do
 		local key = entry[1]
 		local rgb = customColors[key]
@@ -2593,7 +2870,37 @@ local function settingsPage(parent)
 			installCustomTheme(customColors); state.theme = "custom"; applyTheme(); buildPage(true); updateStatus()
 		end)
 	end
-	local saveCustom = button(custom, t("saveCustomTheme"))
+	local customTools = new("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 36)}, custom)
+	local advanced = button(customTools, (customAdvanced and "▾ " or "▸ ") .. t("customAdvanced"))
+	advanced.Size = UDim2.new(0.34, -4, 1, 0); advanced.TextSize = 10
+	advanced.Name = "CustomAdvanced"
+	listen(advanced.Activated, function() customAdvanced = not customAdvanced; buildPage(true) end, pageConnections)
+	if customAdvanced then
+		for _, entry in ipairs({{"surface", "customSurface"}, {"raised", "customRaised"}, {"text", "customText"}, {"muted", "customMuted"}, {"stroke", "customStroke"}}) do
+			local key = entry[1]
+			palette(custom, entry[2], Config.Themes.custom[key], function(color)
+				customColors[key] = {math.round(color.R * 255), math.round(color.G * 255), math.round(color.B * 255)}
+				installCustomTheme(customColors); state.theme = "custom"; applyTheme(); buildPage(true)
+			end)
+		end
+		local auto = button(custom, t("customDerived")); auto.Name = "CustomDerived"
+		listen(auto.Activated, function()
+			for _, key in ipairs({"surface", "raised", "text", "muted", "stroke"}) do customColors[key] = nil end
+			installCustomTheme(customColors); state.theme = "custom"; applyTheme(); buildPage(true)
+		end, pageConnections)
+	end
+	local resetColors = button(customTools, t("resetCustomColors")); resetColors.Name = "CustomResetColors"
+	resetColors.Position = UDim2.fromScale(0.34, 0); resetColors.Size = UDim2.new(0.33, -4, 1, 0); resetColors.TextSize = 10
+	listen(resetColors.Activated, function()
+		local theme = Config.Themes.blackviolet
+		customColors = {}
+		for _, key in ipairs({"bg", "accent", "accent2"}) do
+			local color = theme[key]; customColors[key] = {math.round(color.R * 255), math.round(color.G * 255), math.round(color.B * 255)}
+		end
+		installCustomTheme(customColors); state.theme = "custom"; applyTheme(); buildPage(true)
+	end, pageConnections)
+	local saveCustom = button(customTools, t("saveCustomTheme"))
+	saveCustom.Position = UDim2.fromScale(0.67, 0); saveCustom.Size = UDim2.new(0.33, 0, 1, 0); saveCustom.TextSize = 10
 	listen(saveCustom.Activated, function()
 		local result = request("SaveCustomTheme", {colors = customColors})
 		if report(result) then toast(result.persistent and "customSaved" or "themeSavedSession") end
@@ -2607,7 +2914,7 @@ local function settingsPage(parent)
 		releaseFlyControls()
 		state.speed, state.noclip, state.lift = false, false, false
 		state.fly, state.fullbright, state.statusPanel = false, false, false
-		state.phase, state.phaseSpeed = false, 2
+		state.phase, state.fovToggle = false, false
 		state.quick, state.bindings = {}, {lift = Enum.KeyCode.H, phase = Enum.KeyCode.G}
 		state.hudPinned, state.hudOnlyBound, state.hudPosition, state.showFlyVertical = false, false, nil, false
 		state.esp, state.wallhack, state.thirdPerson = false, false, false
@@ -2619,9 +2926,10 @@ local function settingsPage(parent)
 		state.liftHotkey = Enum.KeyCode[Config.DefaultLiftHotkey]
 		state.theme = state.defaultTheme
 		state.language = Config.DefaultLanguage
+		state.font = Config.DefaultFont
 		state.mode = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and "mobile" or "desktop"
 		selectedUserId = nil
-		capturing = nil; applyCamera(); updateHighlights(); applyTheme(); rebuild(); updateStatus(); toast("resetDone")
+		capturing = nil; applyCamera(); updateHighlights(); applyTheme(); applyFont(); rebuild(); updateStatus(); toast("resetDone")
 	end, pageConnections)
 	local unload = button(parent, t("unload"))
 	listen(unload.Activated, function()
@@ -2669,6 +2977,8 @@ local function visualsPage(parent)
 		state.color = color; updateHighlights(); buildPage(true)
 	end)
 	featureOptions(espCard, "esp")
+	local fovCard = toggle(parent, "fovToggle", "fovToggle", function(value) return setFeature("fovToggle", value, true) end, "fovHint")
+	valueControl(fovCard, "fov"); featureOptions(fovCard, "fovToggle")
 end
 local function movementPage(parent)
 	local speedCard = toggle(parent, "speed", "speed", function(value)
@@ -2697,11 +3007,11 @@ local function movementPage(parent)
 		buildPage(true); updateLayout()
 	end, pageConnections)
 	local phaseCard = toggle(parent, "phase", "phase", function(value) return setFeature("phase", value, true) end, "phaseHint")
-	valueControl(phaseCard, "phaseSpeed"); featureOptions(phaseCard, "phase")
+	featureOptions(phaseCard, "phase")
 	local cameraCard = toggle(parent, "thirdPerson", "thirdPerson", function(value)
 		return setFeature("thirdPerson", value, true)
 	end, "thirdPersonHint")
-	valueControl(cameraCard, "distance"); valueControl(cameraCard, "fov"); featureOptions(cameraCard, "thirdPerson")
+	valueControl(cameraCard, "distance"); featureOptions(cameraCard, "thirdPerson")
 end
 local function storeCall(method, ...)
 	local arguments = table.pack(...)
@@ -2716,7 +3026,7 @@ end
 local function snapshot()
 	local result = {version = 1, preferences = {}, values = {}, toggles = {}}
 	local preferences = result.preferences
-	for _, key in ipairs({"language", "mode", "theme", "defaultTheme", "statusPanel", "hudPinned", "hudOnlyBound", "showFlyVertical"}) do preferences[key] = state[key] end
+	for _, key in ipairs({"language", "mode", "theme", "defaultTheme", "font", "statusPanel", "hudPinned", "hudOnlyBound", "showFlyVertical"}) do preferences[key] = state[key] end
 	preferences.hotkey = state.hotkey.Name
 	preferences.customColors = customColors
 	preferences.quick, preferences.bindings = {}, {}
@@ -2749,10 +3059,18 @@ end
 local function validateSnapshot(data)
 	if type(data) ~= "table" or data.version ~= 1 or type(data.preferences) ~= "table" or type(data.values) ~= "table" or type(data.toggles) ~= "table" then return nil end
 	local prefs, values, toggles = data.preferences, data.values, data.toggles
+	-- Alpha.3 profiles remain usable; FOV was previously owned by thirdPerson.
+	if prefs.font == nil then prefs.font = Config.DefaultFont end
+	if toggles.fovToggle == nil then toggles.fovToggle = toggles.thirdPerson == true end
+	if type(prefs.quick) == "table" and prefs.quick.fovToggle == nil then prefs.quick.fovToggle = false end
+	if type(prefs.bindings) == "table" and prefs.bindings.fovToggle == nil then prefs.bindings.fovToggle = false end
 	if not Config.Translations[prefs.language] or (prefs.mode ~= "desktop" and prefs.mode ~= "mobile") or
-		not Config.Themes[prefs.theme] or not Config.Themes[prefs.defaultTheme] then return nil end
+		not Config.Themes[prefs.theme] or not Config.Themes[prefs.defaultTheme] or not Config.Fonts[prefs.font] then return nil end
 	if type(prefs.customColors) ~= "table" then return nil end
 	for _, field in ipairs({"bg", "accent", "accent2"}) do if not validRGB(prefs.customColors[field]) then return nil end end
+	for _, field in ipairs({"surface", "raised", "text", "muted", "stroke"}) do
+		if prefs.customColors[field] ~= nil and not validRGB(prefs.customColors[field]) then return nil end
+	end
 	for _, field in ipairs({"statusPanel", "hudPinned", "hudOnlyBound", "showFlyVertical"}) do if type(prefs[field]) ~= "boolean" then return nil end end
 	if not validPosition(prefs.hudPosition) or not validPosition(prefs.orbPosition) then return nil end
 	if type(prefs.quick) ~= "table" or type(prefs.bindings) ~= "table" or not validRGB(values.color) then return nil end
@@ -2783,19 +3101,19 @@ local function applySnapshot(data)
 	for _, field in ipairs(featureOrder) do state[field] = false end
 	applyCamera(); updateHighlights()
 	local prefs = data.preferences
-	for _, field in ipairs({"language", "mode", "theme", "defaultTheme", "statusPanel", "hudPinned", "hudOnlyBound", "showFlyVertical", "hudPosition", "quick"}) do state[field] = prefs[field] end
+	for _, field in ipairs({"language", "mode", "theme", "defaultTheme", "font", "statusPanel", "hudPinned", "hudOnlyBound", "showFlyVertical", "hudPosition", "quick"}) do state[field] = prefs[field] end
 	state.hotkey, state.bindings = checked.hotkey, checked.bindings
 	state.liftHotkey = state.bindings.lift or Enum.KeyCode.Unknown
 	installCustomTheme(prefs.customColors)
 	for field in pairs(valueSpecs) do state[field] = data.values[field] end
 	state.color = Color3.fromRGB(data.values.color[1], data.values.color[2], data.values.color[3])
 	local area = root.AbsoluteSize
-	orb.Position = UDim2.fromOffset(prefs.orbPosition.x * math.max(0, area.X - 46), prefs.orbPosition.y * math.max(0, area.Y - 46))
+	orb.Position = UDim2.fromOffset(prefs.orbPosition.x * math.max(0, area.X - openerWidth), prefs.orbPosition.y * math.max(0, area.Y - openerHeight))
 	local success = true
 	for _, field in ipairs(featureOrder) do
 		if data.toggles[field] and not setFeature(field, true, true) then success = false end
 	end
-	capturing = nil; applyTheme(); rebuild()
+	capturing = nil; applyTheme(); applyFont(); rebuild()
 	if not success then toast("configApplyFailed") end
 	return success
 end
@@ -2873,6 +3191,11 @@ local function buildAccess()
 	round(keyBox, 8)
 	local unlockButton = button(frame, t("unlock"), true)
 	unlockButton.Name = "Unlock"
+	local copyServer = button(frame, t("copyServerLink"))
+	copyServer.Name = "KeyDiscordCopy"
+	listen(copyServer.Activated, copyDiscord, pageConnections)
+	local remember = paint(label(frame, t("keyRememberHint"), 11), "TextColor3", "muted")
+	remember.AutomaticSize = Enum.AutomaticSize.Y; remember.Size = UDim2.new(1, 0, 0, 0)
 	local busy = false
 	local function submit()
 		if busy then return end
@@ -2911,7 +3234,7 @@ updateChrome = function()
 	footer.Text = state.mode == "desktop" and UserInputService.KeyboardEnabled
 		and (state.hotkey.Name .. "  ·  " .. t("ready")) or t("mobileFooter")
 	-- Keep a way back into the menu on touch-only devices even in PC mode.
-	orb.Visible = state.mode == "mobile" or not UserInputService.KeyboardEnabled
+	orb.Visible = not opened and (state.mode == "mobile" or not UserInputService.KeyboardEnabled)
 	closeButton.Visible = true
 end
 updateLayout = function()
@@ -2954,8 +3277,8 @@ updateLayout = function()
 			control.TextSize = compact and 10 or 12
 		end
 	end
-	orb.Position = UDim2.fromOffset(math.clamp(orb.Position.X.Offset, 0, math.max(0, area.X - 46)),
-		math.clamp(orb.Position.Y.Offset, 0, math.max(0, area.Y - 46)))
+	orb.Position = UDim2.fromOffset(math.clamp(orb.Position.X.Offset, 0, math.max(0, area.X - openerWidth)),
+		math.clamp(orb.Position.Y.Offset, 0, math.max(0, area.Y - openerHeight)))
 	local hudWidth, hudHeight = math.min(214, area.X - 20), math.max(100, math.min(360, area.Y - 30))
 	statusHUD.Size = UDim2.fromOffset(hudWidth, hudHeight)
 	local position = state.hudPosition
@@ -2991,6 +3314,7 @@ setOpen = function(value)
 	end
 	if hotkeyButton and hotkeyButton.Parent then hotkeyButton.Text = t("changeHotkey") .. ": " .. state.hotkey.Name end
 	if liftKeyButton and liftKeyButton.Parent then liftKeyButton.Text = t("changeLiftHotkey") .. ": " .. state.liftHotkey.Name end
+	updateChrome()
 	updateStatus()
 end
 listen(closeButton.Activated, function() setOpen(false) end)
@@ -3098,6 +3422,7 @@ cleanup = function()
 	if sliderDrag then sliderDrag.finish(true) end
 	table.clear(flyPointers)
 	alive = false
+	if fovConnection then fovConnection:Disconnect(); fovConnection = nil end
 	backend:Destroy()
 	restoreCamera()
 	disconnect(connections); disconnect(pageConnections); disconnect(modalConnections); disconnect(hudConnections)
@@ -3115,5 +3440,11 @@ listen(controlEvent.Event, function(action)
 	if action == "Open" then setOpen(true) end
 end)
 for _, other in ipairs(Players:GetPlayers()) do watchPlayer(other) end
+local access = request("Status")
+if access.ok and access.unlocked then
+	installCustomTheme(access.customTheme)
+	if Config.Themes[access.defaultTheme] then state.defaultTheme = access.defaultTheme; state.theme = access.defaultTheme end
+	unlocked = true; applyTheme()
+end
 rebuild()
 
